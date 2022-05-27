@@ -21,7 +21,7 @@ class BasicAuth(unittest.TestCase):
         password = 'admin'
         self.driver.get("https://" + user + ":" + password + "@the-internet.herokuapp.com/basic_auth")
         message = self.driver.find_element(*self.MESSAGE).text
-        self.assertTrue = 'proper credentials' in message
+        self.assertTrue('proper credentials' in message)
         print('', message)
         self.driver.back()
         self.driver.back()
