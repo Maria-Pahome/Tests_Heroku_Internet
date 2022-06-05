@@ -17,6 +17,13 @@ Automated tests for: https://the-internet.herokuapp.com/
 * Disappearing Elements
 * Form Authentication
 
+⏬
+**Test Suite** in _TestSuite.py_ file
+
+⏬
+**HTML Reports** in _reports_ folder
+![HTML report](https://user-images.githubusercontent.com/70057309/172043988-fbcdc6bd-c59d-4623-9c91-4f2ac03ba250.JPG)
+
 ⏩ Steps to download the repository:
 1. Navigate to the upper level of the project;
 2. Click on the blue ‘Code’ button;
