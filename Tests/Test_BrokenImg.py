@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class BrokenImage(unittest.TestCase):
-    IMG = (By.CSS_SELECTOR, "#content > div > img:nth-child(4)")
+    IMG = (By.XPATH, '(//div[@class="example"]//parent::h3//following-sibling::img)[1]')
 
     def setUp(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())

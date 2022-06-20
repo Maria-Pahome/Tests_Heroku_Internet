@@ -5,7 +5,10 @@ import HtmlTestRunner
 from Tests.Test_AddRemove import AddRemove
 from Tests.Test_BasicAuth import BasicAuth
 from Tests.Test_BrokenImg import BrokenImage
+from Tests.Test_Checkboxes import Checkboxes
 from Tests.Test_ContextMenu import ContextMenu
+from Tests.Test_DisappearingElement import DisappearingElement
+from Tests.Test_Login_Page import LoginPage
 
 
 class TestSuite(unittest.TestCase):
@@ -16,7 +19,10 @@ class TestSuite(unittest.TestCase):
             unittest.defaultTestLoader.loadTestsFromTestCase(AddRemove),
             unittest.defaultTestLoader.loadTestsFromTestCase(BasicAuth),
             unittest.defaultTestLoader.loadTestsFromTestCase(BrokenImage),
-            unittest.defaultTestLoader.loadTestsFromTestCase(ContextMenu)
+            unittest.defaultTestLoader.loadTestsFromTestCase(Checkboxes),
+            unittest.defaultTestLoader.loadTestsFromTestCase(ContextMenu),
+            unittest.defaultTestLoader.loadTestsFromTestCase(DisappearingElement),
+            unittest.defaultTestLoader.loadTestsFromTestCase(LoginPage)
         ])
 
         runner = HtmlTestRunner.HTMLTestRunner(

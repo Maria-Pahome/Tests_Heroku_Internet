@@ -15,6 +15,9 @@ class ContextMenu(unittest.TestCase):
         self.driver.implicitly_wait(10)
         self.driver.maximize_window()
 
+    def tearDown(self):
+        self.driver.quit()
+
     def test_box_select_box(self):
         action = ActionChains(self.driver)
         action.context_click(self.driver.find_element(*self.BOX)).perform()
@@ -23,5 +26,4 @@ class ContextMenu(unittest.TestCase):
         self.assertEquals(alert.text, 'You selected a context menu', 'Failed to select context-menu alert!')
         alert.accept()
 
-    def tearDown(self):
-        self.driver.quit()
+

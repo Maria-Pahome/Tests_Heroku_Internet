@@ -14,8 +14,11 @@ class AddRemove(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.get("https://the-internet.herokuapp.com/")
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(10)
         self.driver.maximize_window()
+
+    def tearDown(self):
+        self.driver.quit()
 
     def test_add_remove_elements(self):
         self.driver.find_element(*self.ADD_REMOVE).click()
@@ -28,5 +31,3 @@ class AddRemove(unittest.TestCase):
         self.assertIsNotNone(self.DELETE, 'Test Failed!')
         print('', 'Test Passed!')
 
-    def tearDown(self):
-        self.driver.quit()

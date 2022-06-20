@@ -1,4 +1,3 @@
-import time
 import unittest
 
 from selenium import webdriver
@@ -7,13 +6,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class LoginPage(unittest.TestCase):
-    USER = (By.ID, "username")
-    PASS = (By.ID, "password")
-    SUBMIT = (By.CLASS_NAME, "radius")
-    ERROR = (By.ID, "flash-messages")
-    LOGOUT = (By.CSS_SELECTOR, "#content > div > a")
-    USERNAME = (By.CSS_SELECTOR, "#content > div > h4 > em:nth-child(1)")
-    PASSWORD = (By.CSS_SELECTOR, "#content > div > h4 > em:nth-child(2)")
+    USER = (By.XPATH, '//input[@id="username"]')
+    PASSWORD = (By.XPATH, '//input[@id="password"]')
+    SUBMIT = (By.XPATH, '//button[@class="radius"]')
+    LOGIN_ERROR = (By.XPATH, '//div[contains(text(),"logged")]')
+    LOGOUT = (By.XPATH, '//a[@class="button secondary radius"]')
+    LOGOUT_ERR = (By.XPATH, '//div[@class="flash success"]')
+    USER_PASS_ERR = (By.XPATH, '//div[@class="flash error"]')
 
     def setUp(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -24,18 +23,31 @@ class LoginPage(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def test_login_correct_creds(self):
+    def login(self):
         self.driver.find_element(*self.USER).send_keys("tomsmith")
-        self.driver.find_element(*self.PASS).send_keys("SuperSecretPassword!")
+        self.driver.find_element(*self.PASSWORD).send_keys("SuperSecretPassword!")
         self.driver.find_element(*self.SUBMIT).click()
-        flash_message = self.driver.find_element(*self.ERROR).text  # error text in page
-        if "logged into" in flash_message:
-            print("Test passed!")
-            self.driver.find_element(*self.LOGOUT).click()
-            time.sleep(2)
-        else:
-            print("Test failed!")
 
+    def test_enter_wrong_user_password(self):
+        self.driver.find_element(*self.USER).send_keys("xxxx")
+        self.driver.find_element(*self.PASSWORD).send_keys("xxxx")
+        self.driver.find_element(*self.SUBMIT).click()
+        err_msg = self.driver.find_element(*self.USER_PASS_ERR).text
+        self.assertIn(err_msg, 'Your username is invalid!\n×', 'Incorrect username and password error msg')
 
+    def test_login_empty_fields(self):
+        self.driver.find_element(*self.SUBMIT).click()
+        err_msg = self.driver.find_element(*self.USER_PASS_ERR).text
+        self.assertIn(err_msg, 'Your username is invalid!\n×', 'Incorrect username and password error msg')
 
+    def test_login_correct_credentials(self):
+        self.login()
+        expected = self.driver.find_element(*self.LOGIN_ERROR).text
+        actual = 'You logged into a secure area!\n×'
+        self.assertEqual(expected, actual, 'Not the correct error message')
 
+    def test_logout_err_msg(self):
+        self.login()
+        self.driver.find_element(*self.LOGOUT).click()
+        err_msg = self.driver.find_element(*self.LOGOUT_ERR).text
+        self.assertIn(err_msg, 'You logged out of the secure area!\n×', 'Not the correct error message')
