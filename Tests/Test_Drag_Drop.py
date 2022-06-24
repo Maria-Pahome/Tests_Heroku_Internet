@@ -22,8 +22,9 @@ class DragDrop(unittest.TestCase):
         self.driver.quit()
 
     def test_dragA_drop_onB(self):
-        f = self.driver.find_element(*self.FIRST)
-        s = self.driver.find_element(*self.SECOND)
         actions = ActionChains(self.driver)
-        actions.click_and_hold(f).move_by_offset(150, 100).pause(2).move_by_offset(-10, -10).release().perform()
-        self.assertIn('A', s.text, 'Action not performed')
+        source = self.driver.find_element(*self.FIRST)
+        target = self.driver.find_element(*self.SECOND)
+        actions.click_and_hold(source).move_to_element_with_offset(target, 150, 100).perform()
+        result = self.driver.find_element(By.XPATH, '//div[@id="column-b"]//parent::header').text
+        self.assertIn('A', result, 'Action not performed')
